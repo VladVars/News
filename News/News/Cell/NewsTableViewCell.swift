@@ -8,7 +8,7 @@
 import UIKit
 
 class NewsTableViewCell: UITableViewCell {
-
+    
     static let identifier = "NewsTableViewCell"
     
     private let newsTitleLabel: UILabel = {
@@ -22,6 +22,12 @@ class NewsTableViewCell: UITableViewCell {
         let label = UILabel()
         label.numberOfLines = 0
         label.font = .systemFont(ofSize: 15, weight: .light)
+        return label
+    }()
+    
+    private let publishedAtLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 13, weight: .light)
         return label
     }()
     
@@ -40,6 +46,7 @@ class NewsTableViewCell: UITableViewCell {
         contentView.addSubview(newsImageView)
         contentView.addSubview(newsTitleLabel)
         contentView.addSubview(newsDescriptionLabel)
+        contentView.addSubview(publishedAtLabel)
     }
     
     required init?(coder: NSCoder) {
@@ -55,9 +62,14 @@ class NewsTableViewCell: UITableViewCell {
                                       height: 70)
         
         newsDescriptionLabel.frame = CGRect(x: 10,
-                                            y: 70,
+                                            y: 60,
                                             width: contentView.frame.size.width - 170,
                                             height: contentView.frame.size.height/2)
+        
+        publishedAtLabel.frame = CGRect(x: 10,
+                                        y: 110,
+                                        width: contentView.frame.size.width - 170,
+                                        height: contentView.frame.size.height/2)
         
         newsImageView.frame = CGRect(x: contentView.frame.size.width - 160,
                                      y: 5,
@@ -75,8 +87,9 @@ class NewsTableViewCell: UITableViewCell {
     func configure(with viewModel: NewsTableViewCellViewModel) {
         newsTitleLabel.text = viewModel.title
         newsDescriptionLabel.text = viewModel.description
+        publishedAtLabel.text = viewModel.publishedAt
         
-//        Image
+        //        Image
         if let data = viewModel.imageData {
             newsImageView.image = UIImage(data: data)
         } else if let url = viewModel.imageURL {

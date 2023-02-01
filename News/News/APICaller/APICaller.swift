@@ -13,7 +13,6 @@ final class APICaller {
     struct Constants {
         static let topHeadlinesURL = URL(string: "https://newsapi.org/v2/top-headlines?country=US&apiKey=3662bd47e0db48d1b1033d2fb0c6363f")
     }
-    private init() {}
     
     public func getTopStories(completion: @escaping (Result<[Article], Error>) -> Void) {
         guard let url = Constants.topHeadlinesURL else { return }

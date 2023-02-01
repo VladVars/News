@@ -25,19 +25,19 @@
             <point key="canvasLocation" x="1043.5114503816794" y="3.5211267605633805"/>
         </scene>
         <!--News View Controller-->
-        <scene sceneID="nLd-wX-GVa">
+        <scene sceneID="BbE-Dy-g3r">
             <objects>
-                <viewController storyboardIdentifier="NewsViewController" id="zBU-aI-azx" customClass="NewsViewController" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="uT9-ST-Ugm">
+                <viewController storyboardIdentifier="NewsViewController" id="IMg-VY-qXd" customClass="NewsViewController" customModule="News" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="xeP-vY-6lJ">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <viewLayoutGuide key="safeArea" id="SSJ-ju-zjY"/>
+                        <viewLayoutGuide key="safeArea" id="mo1-ag-MDA"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="TNG-vr-gcz" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="SLk-FN-iuH" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2056" y="4"/>
+            <point key="canvasLocation" x="1864.885496183206" y="3.5211267605633805"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="uL2-Xh-PF1">
