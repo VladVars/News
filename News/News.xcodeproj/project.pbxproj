@@ -16,6 +16,8 @@
 		D10CD3AA298A58B50092ED02 /* NewsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D10CD3A9298A58B50092ED02 /* NewsViewController.swift */; };
 		D10CD3B2298A5D790092ED02 /* APICaller.swift in Sources */ = {isa = PBXBuildFile; fileRef = D10CD3B1298A5D790092ED02 /* APICaller.swift */; };
 		D10CD3B4298A62000092ED02 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = D10CD3B3298A62000092ED02 /* Model.swift */; };
+		D10CD3B7298A6BBF0092ED02 /* NewsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D10CD3B6298A6BBF0092ED02 /* NewsTableViewCell.swift */; };
+		D10CD3B9298A6F0E0092ED02 /* NewsTableViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D10CD3B8298A6F0E0092ED02 /* NewsTableViewCellViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +32,8 @@
 		D10CD3A9298A58B50092ED02 /* NewsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsViewController.swift; sourceTree = "<group>"; };
 		D10CD3B1298A5D790092ED02 /* APICaller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APICaller.swift; sourceTree = "<group>"; };
 		D10CD3B3298A62000092ED02 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
+		D10CD3B6298A6BBF0092ED02 /* NewsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsTableViewCell.swift; sourceTree = "<group>"; };
+		D10CD3B8298A6F0E0092ED02 /* NewsTableViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsTableViewCellViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -113,6 +117,7 @@
 			isa = PBXGroup;
 			children = (
 				D10CD3B3298A62000092ED02 /* Model.swift */,
+				D10CD3B8298A6F0E0092ED02 /* NewsTableViewCellViewModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -128,6 +133,7 @@
 		D10CD3B5298A6B510092ED02 /* Cell */ = {
 			isa = PBXGroup;
 			children = (
+				D10CD3B6298A6BBF0092ED02 /* NewsTableViewCell.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -204,10 +210,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				D10CD39A298A564E0092ED02 /* ViewController.swift in Sources */,
+				D10CD3B7298A6BBF0092ED02 /* NewsTableViewCell.swift in Sources */,
 				D10CD396298A564E0092ED02 /* AppDelegate.swift in Sources */,
 				D10CD398298A564E0092ED02 /* SceneDelegate.swift in Sources */,
 				D10CD3B4298A62000092ED02 /* Model.swift in Sources */,
 				D10CD3B2298A5D790092ED02 /* APICaller.swift in Sources */,
+				D10CD3B9298A6F0E0092ED02 /* NewsTableViewCellViewModel.swift in Sources */,
 				D10CD3AA298A58B50092ED02 /* NewsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
