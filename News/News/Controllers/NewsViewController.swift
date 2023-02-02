@@ -22,13 +22,6 @@ class NewsViewController: UIViewController {
         return scrollView
     }()
     
-    //    private lazy var contentView: UIView = {
-    //        let contentView = UIView()
-    //        contentView.backgroundColor = .systemBackground
-    //        contentView.frame.size = contentSize
-    //        return contentView
-    //    }()
-    
     private var contentSize: CGSize {
         CGSize(width: view.frame.width, height: view.frame.height + 100)
         
@@ -111,10 +104,10 @@ class NewsViewController: UIViewController {
         scrollView.addSubview(moredetailedButton)
         scrollView.addSubview(shareButton)
         
-//        Add Target Button
+        //        Add Target Button
         moredetailedButton.addTarget(self,
-                              action: #selector(moredetailedButtonTapped),
-                              for: .touchUpInside)
+                                     action: #selector(moredetailedButtonTapped),
+                                     for: .touchUpInside)
         
         shareButton.addTarget(self,
                               action: #selector(shareButtonTapped),

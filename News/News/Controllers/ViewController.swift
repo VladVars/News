@@ -17,6 +17,13 @@ class ViewController: UIViewController {
         return table
     }()
     
+//    private let myRefreshControl: UIRefreshControl = {
+//        let refreshControl = UIRefreshControl()
+//        refreshControl.addTarget(ViewController.self, action: #selector(refresh(sender: )), for: .valueChanged)
+//
+//        return refreshControl
+//    }()
+    
     private let searchVC = UISearchController(searchResultsController: nil )
     
     private var articles = [Article]()
@@ -30,11 +37,19 @@ class ViewController: UIViewController {
         view.addSubview(tableView)
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.refreshControl = UIRefreshControl()
+        tableView.refreshControl?.addTarget(self, action: #selector(refresh), for: .valueChanged)
         
         view.backgroundColor = .systemBackground
         
         fetchTopStories()
         createSearchBar()
+    }
+    
+    @objc private func refresh() {
+        print("start refresh")
+        
+        fetchTopStories()
     }
     
     private func createSearchBar() {
@@ -53,10 +68,11 @@ class ViewController: UIViewController {
                                                description: $0.description ?? "No Description",
                                                publishedAt: $0.publishedAt,
                                                content: $0.content ?? "No Content",
-                                               imageURL: URL(string: $0.urlToImage ?? "nosign"))
+                                               imageURL: URL(string: $0.urlToImage ?? ""))
                 })
                 
                 DispatchQueue.main.async {
+                    self?.tableView.refreshControl?.endRefreshing()
                     self?.tableView.reloadData()
                 }
                 
