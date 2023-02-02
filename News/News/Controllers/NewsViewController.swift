@@ -6,36 +6,38 @@
 //
 
 import UIKit
+import SafariServices
 
 class NewsViewController: UIViewController {
     
-    var article = [Article]()
+    var urlString = String()
+    
     
     private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
+        scrollView.clipsToBounds = true
         scrollView.backgroundColor = .systemBackground
         scrollView.frame = view.bounds
         scrollView.contentSize = contentSize
         return scrollView
     }()
     
-    private lazy var contentView: UIView = {
-        let contentView = UIView()
-        contentView.backgroundColor = .systemBackground
-        contentView.frame.size = contentSize
-        return contentView
-    }()
+    //    private lazy var contentView: UIView = {
+    //        let contentView = UIView()
+    //        contentView.backgroundColor = .systemBackground
+    //        contentView.frame.size = contentSize
+    //        return contentView
+    //    }()
     
     private var contentSize: CGSize {
-        CGSize(width: view.frame.width, height: view.frame.height + 1000)
-
+        CGSize(width: view.frame.width, height: view.frame.height + 100)
+        
     }
     
     private let newsImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.layer.cornerRadius = 8
         imageView.layer.masksToBounds = true
-        imageView.clipsToBounds = true
         imageView.backgroundColor = .lightGray
         imageView.contentMode = .scaleAspectFill
         return imageView
@@ -74,50 +76,129 @@ class NewsViewController: UIViewController {
         return label
     }()
     
+    private let moredetailedButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("More Detailed", for: .normal)
+        button.backgroundColor = .gray
+        button.setTitleColor(.white, for: .normal)
+        button.layer.cornerRadius = 12
+        button.layer.masksToBounds = true
+        button.titleLabel?.font = .systemFont(ofSize: 20, weight: .bold)
+        return button
+    }()
+    
+    private let shareButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Share", for: .normal)
+        button.backgroundColor = .gray
+        button.setTitleColor(.white, for: .normal)
+        button.layer.cornerRadius = 12
+        button.layer.masksToBounds = true
+        button.titleLabel?.font = .systemFont(ofSize: 20, weight: .bold)
+        return button
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.addSubview(scrollView)
-        scrollView.addSubview(contentView)
-        contentView.addSubview(newsImageView)
-        contentView.addSubview(newsTitleLabel)
-        contentView.addSubview(newsDescriptionLabel)
-        contentView.addSubview(newsContentLabel)
-        contentView.addSubview(publishedAtLabel)
         
+        //        Add subviews
+        view.addSubview(scrollView)
+        scrollView.addSubview(newsImageView)
+        scrollView.addSubview(newsTitleLabel)
+        scrollView.addSubview(newsDescriptionLabel)
+        scrollView.addSubview(newsContentLabel)
+        scrollView.addSubview(publishedAtLabel)
+        scrollView.addSubview(moredetailedButton)
+        scrollView.addSubview(shareButton)
+        
+//        Add Target Button
+        moredetailedButton.addTarget(self,
+                              action: #selector(moredetailedButtonTapped),
+                              for: .touchUpInside)
+        
+        shareButton.addTarget(self,
+                              action: #selector(shareButtonTapped),
+                              for: .touchUpInside)
+        
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        scrollView.frame = view.bounds
         
         newsImageView.frame = CGRect(x: 0,
                                      y: -30,
-                                     width: contentView.frame.size.width - 0,
+                                     width: scrollView.frame.size.width - 0,
                                      height: 400)
         
         newsTitleLabel.frame = CGRect(x: 20,
                                       y: 170,
-                                      width: contentView.frame.size.width - 60,
+                                      width: scrollView.frame.size.width - 60,
                                       height: 170)
         
         publishedAtLabel.frame = CGRect(x: 20,
                                         y: 330,
-                                        width: contentView.frame.size.width - 60,
+                                        width: scrollView.frame.size.width - 60,
                                         height: 30)
         
         newsDescriptionLabel.frame = CGRect(x: 10,
-                                        y: contentView.frame.size.width - 850,
-                                        width: contentView.frame.size.width - 40,
-                                        height: contentView.frame.size.height - 60)
+                                            y: 80,
+                                            width: scrollView.frame.size.width - 40,
+                                            height: scrollView.frame.size.height - 100)
         
         newsContentLabel.frame = CGRect(x: 10,
-                                        y: newsImageView.frame.size.width - 220,
-                                        width: contentView.frame.size.width - 40,
-                                        height: contentView.frame.size.height - 0)
+                                        y: 200,
+                                        width: scrollView.frame.size.width - 40,
+                                        height: scrollView.frame.size.height - 0)
         
-        publishedAtLabel.text = "2023.02.01 11:34"
+        moredetailedButton.frame = CGRect(x: 30,
+                                          y: 750,
+                                          width: scrollView.frame.size.width - 80,
+                                          height: 50)
         
-        newsDescriptionLabel.text = "Сэму и Дину придется вступить в бой с полчищами кровожадных созданий, превосходящих по силе любого человека."
+        shareButton.frame = CGRect(x: 30,
+                                   y: 830,
+                                   width: scrollView.frame.size.width - 80,
+                                   height: 50)
+    }
+    
+    @objc private func moredetailedButtonTapped() {
         
-        newsContentLabel.text = "В сериале Сверхъестественное Бог выпустил всех своих созданий в мир людей. Землю заполонили всевозможные чудовища: вампиры, левиафаны, зомби и многие другие ужасные твари, жадные до человеческой крови. Молодые охотники столкнулись с серьезной проблемой: у них нет могущественного покровителя, который помог бы им разрешить трудности. Сэму и Дину придется вступить в бой с полчищами кровожадных созданий, превосходящих по силе любого человека.Героям не у кого просить помощи, поэтому они должны самостоятельно вступать в смертоносную схватку. Любая битва может закончиться мучительной гибелью, но братья готовы пожертвовать собой, чтобы спасти мир. Работы стало в разы больше, ведь теперь вся планета заполнена смертоносными тварями, которые жаждут уничтожить человечество и использовать его как источник пропитания. Хитроумным парням придется найти способ прогнать монстров без помощи всемогущего, но чрезвычайно обидчивого Бога.В сериале Сверхъестественное Бог выпустил всех своих созданий в мир людей. Землю заполонили всевозможные чудовища: вампиры, левиафаны, зомби и многие другие ужасные твари, жадные до человеческой крови. Молодые охотники столкнулись с серьезной проблемой: у них нет могущественного покровителя, который помог бы им разрешить трудности. Сэму и Дину придется вступить в бой с полчищами кровожадных созданий, превосходящих по силе любого человека.Героям не у кого просить помощи, поэтому они должны самостоятельно вступать в смертоносную схватку. Любая битва может закончиться мучительной гибелью, но братья готовы пожертвовать собой, чтобы спасти мир. Работы стало в разы больше, ведь теперь вся планета заполнена смертоносными тварями, которые жаждут уничтожить человечество и использовать его как источник пропитания. Хитроумным парням придется найти способ прогнать монстров без помощи всемогущего, но чрезвычайно обидчивого Бога."
+        guard let url = URL(string: urlString) else { return}
         
-        newsTitleLabel.text = "Hellosfd;lksfl;ksd;lfksd;lfksd;lfk;sdfks;ldfksd;lfkdlsfks;lkdsf;lkmmmmmmmfkmslkdmfkdsflksdfmlkkpsdfopkdsfo3095i534jofokf;"
+        let vc = SFSafariViewController(url: url)
         
+        present(vc, animated: true)
+    }
+    
+    @objc private func shareButtonTapped() {
+        let shaerVC = UIActivityViewController(activityItems: [urlString], applicationActivities: nil)
+        shaerVC.popoverPresentationController?.sourceView = view
+        
+        present(shaerVC, animated: true)
+    }
+    
+    func configure(with viewModel: NewsTableViewCellViewModel) {
+        newsTitleLabel.text = viewModel.title
+        newsDescriptionLabel.text = viewModel.description
+        publishedAtLabel.text = viewModel.publishedAt
+        newsContentLabel.text = viewModel.content
+        
+        
+        if let data = viewModel.imageData {
+            newsImageView.image = UIImage(data: data)
+        } else if let url = viewModel.imageURL {
+            URLSession.shared.dataTask(with: url) { [weak self] data, _, error in
+                guard let data = data, error == nil else {
+                    return
+                }
+                viewModel.imageData = data
+                DispatchQueue.main.async {
+                    self?.newsImageView.image = UIImage(data: data)
+                }
+            }.resume()
+        }
     }
     
     
