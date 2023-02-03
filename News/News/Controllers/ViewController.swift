@@ -11,18 +11,10 @@ class ViewController: UIViewController {
     
     private let tableView: UITableView = {
         let table = UITableView()
-        table.register(NewsTableViewCell.self,
-                       forCellReuseIdentifier: NewsTableViewCell.identifier)
+        table.register(NewsTableViewCell.self,forCellReuseIdentifier: NewsTableViewCell.identifier)
         
         return table
     }()
-    
-//    private let myRefreshControl: UIRefreshControl = {
-//        let refreshControl = UIRefreshControl()
-//        refreshControl.addTarget(ViewController.self, action: #selector(refresh(sender: )), for: .valueChanged)
-//
-//        return refreshControl
-//    }()
     
     private let searchVC = UISearchController(searchResultsController: nil )
     
@@ -37,6 +29,7 @@ class ViewController: UIViewController {
         view.addSubview(tableView)
         tableView.delegate = self
         tableView.dataSource = self
+        
         tableView.refreshControl = UIRefreshControl()
         tableView.refreshControl?.addTarget(self, action: #selector(refresh), for: .valueChanged)
         
@@ -56,14 +49,12 @@ class ViewController: UIViewController {
     }
     
     private func fetchTopStories() {
-        viewModels.removeAll()
         
         if tableView.refreshControl?.isRefreshing == true {
             print("refreshing data")
         } else {
             print("fetching data")
         }
-        
         APICaller.shared.getTopStories { [weak self] result in
             switch result {
             case .success(let articles):
@@ -71,21 +62,18 @@ class ViewController: UIViewController {
                 self?.viewModels = articles.compactMap({
                     NewsTableViewCellViewModel(title: $0.title,
                                                description: $0.description ?? "No Description",
-                                               publishedAt: $0.publishedAt,
+                                               pubDate: $0.pubDate,
                                                content: $0.content ?? "No Content",
-                                               imageURL: URL(string: $0.urlToImage ?? ""))
+                                               image_url: URL(string: $0.image_url ?? ""))
                 })
-                
                 DispatchQueue.main.async {
                     self?.tableView.refreshControl?.endRefreshing()
                     self?.tableView.reloadData()
                 }
-                
             case .failure(let error):
                 print(error)
             }
         }
-        
     }
     
     override func viewDidLayoutSubviews() {
@@ -97,25 +85,23 @@ class ViewController: UIViewController {
 
 extension ViewController: UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModels.count 
+        return viewModels.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: NewsTableViewCell.identifier,for: indexPath) as? NewsTableViewCell else {
             fatalError()
         }
-        
         cell.configure(with: viewModels[indexPath.row])
-        
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-
+        
         let article = articles[indexPath.row]
         
-        guard let url = URL(string: article.url ?? "") else { return }
+        guard let url = URL(string: article.link ?? "") else { return }
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let vc = storyboard.instantiateViewController(withIdentifier: String(describing: NewsViewController.self)) as! NewsViewController
@@ -130,7 +116,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource, UISearchBa
         return 170
     }
     
-//    Search
+    //    Search
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         guard let text = searchBar.text, !text.isEmpty else { return }
@@ -141,19 +127,16 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource, UISearchBa
                 self?.viewModels = articles.compactMap({
                     NewsTableViewCellViewModel(title: $0.title,
                                                description: $0.description ?? "No Description",
-                                               publishedAt: $0.publishedAt,
+                                               pubDate: $0.pubDate,
                                                content: $0.content ?? "No Content",
-                                               imageURL: URL(string: $0.urlToImage ?? ""))
+                                               image_url: URL(string: $0.image_url ?? ""))
                 })
-                
                 DispatchQueue.main.async {
                     self?.tableView.reloadData()
                 }
-                
             case .failure(let error):
                 print(error)
             }
         }
-        
     }
 }

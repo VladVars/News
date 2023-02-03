@@ -12,26 +12,26 @@ class NewsViewController: UIViewController {
     
     var urlString = String()
     
-    
     private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.backgroundColor = .systemBackground
         scrollView.frame = view.bounds
-        scrollView.contentSize = contentSize
+//        scrollView.contentSize = contentSize
         return scrollView
     }()
+    
     private lazy var contentView: UIView = {
         let contentView = UIView()
         contentView.backgroundColor = .systemBackground
         contentView.frame = view.bounds
-        contentView.frame.size = contentSize
+//        contentView.frame.size = contentSize
         return contentView
     }()
     
-    private var contentSize: CGSize {
-        CGSize(width: view.frame.width, height: view.frame.height + 100)
-        
-    }
+//    private var contentSize: CGSize {
+//        CGSize(width: view.frame.width, height: view.frame.height + 100)
+//
+//    }
     
     private let newsImageView: UIImageView = {
         let imageView = UIImageView()
@@ -109,6 +109,7 @@ class NewsViewController: UIViewController {
         //        Add subviews
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
+        scrollView.resizeScrollViewContentSize()
         contentView.addSubview(newsImageView)
         contentView.addSubview(newsTitleLabel)
         contentView.addSubview(newsDescriptionLabel)
@@ -128,14 +129,8 @@ class NewsViewController: UIViewController {
                               for: .touchUpInside)
         
         
-        
+        //        Add Constraints
         setupConstraints()
-        
-    }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-                
         
     }
     
@@ -158,13 +153,12 @@ class NewsViewController: UIViewController {
     func configure(with viewModel: NewsTableViewCellViewModel) {
         newsTitleLabel.text = viewModel.title
         newsDescriptionLabel.text = viewModel.description
-        publishedAtLabel.text = viewModel.publishedAt
+        publishedAtLabel.text = viewModel.pubDate
         newsContentLabel.text = viewModel.content
-        
         
         if let data = viewModel.imageData {
             newsImageView.image = UIImage(data: data)
-        } else if let url = viewModel.imageURL {
+        } else if let url = viewModel.image_url {
             URLSession.shared.dataTask(with: url) { [weak self] data, _, error in
                 guard let data = data, error == nil else {
                     return
@@ -176,9 +170,26 @@ class NewsViewController: UIViewController {
             }.resume()
         }
     }
-    
-    
 }
+
+extension UIScrollView {
+
+    func resizeScrollViewContentSize() {
+
+        var contentRect = CGRect.zero
+
+        for view in self.subviews {
+
+            contentRect = contentRect.union(view.frame)
+
+        }
+
+        self.contentSize = contentRect.size
+
+    }
+
+}
+
 extension NewsViewController {
     
     private func setupConstraints() {
@@ -192,13 +203,15 @@ extension NewsViewController {
                                                      attribute: .left,
                                                      multiplier: 1,
                                                      constant: 0)
+        
         let rightImageConstraint = NSLayoutConstraint(item: newsImageView,
-                                                     attribute: .right,
-                                                     relatedBy: .equal,
-                                                     toItem: self.contentView,
-                                                     attribute: .right,
-                                                     multiplier: 1,
-                                                     constant: 0)
+                                                      attribute: .right,
+                                                      relatedBy: .equal,
+                                                      toItem: self.contentView,
+                                                      attribute: .right,
+                                                      multiplier: 1,
+                                                      constant: 0)
+        
         let topImageConstraint = NSLayoutConstraint(item: newsImageView,
                                                     attribute: .top,
                                                     relatedBy: .equal,
@@ -206,6 +219,7 @@ extension NewsViewController {
                                                     attribute: .top,
                                                     multiplier: 1,
                                                     constant: -40)
+        
         let heightImageConstraint = NSLayoutConstraint(item: newsImageView,
                                                        attribute: .height,
                                                        relatedBy: .equal,
@@ -213,208 +227,238 @@ extension NewsViewController {
                                                        attribute: .notAnAttribute,
                                                        multiplier: 1,
                                                        constant: 350)
-
+        
         
         NSLayoutConstraint.activate([leftImageConstraint,rightImageConstraint,topImageConstraint,heightImageConstraint])
         
         newsTitleLabel.translatesAutoresizingMaskIntoConstraints = false
         
         let leftTitleLabel = NSLayoutConstraint(item: newsTitleLabel,
-                                                     attribute: .left,
-                                                     relatedBy: .equal,
-                                           toItem: self.contentView,
-                                                     attribute: .left,
-                                                     multiplier: 1,
-                                                     constant: 16)
+                                                attribute: .left,
+                                                relatedBy: .equal,
+                                                toItem: self.contentView,
+                                                attribute: .left,
+                                                multiplier: 1,
+                                                constant: 16)
+        
         let rightTitleLabel = NSLayoutConstraint(item: newsTitleLabel,
-                                                     attribute: .right,
-                                                     relatedBy: .equal,
-                                                     toItem: self.newsImageView,
-                                                     attribute: .right,
-                                                     multiplier: 1,
-                                                     constant: -16)
+                                                 attribute: .right,
+                                                 relatedBy: .equal,
+                                                 toItem: self.newsImageView,
+                                                 attribute: .right,
+                                                 multiplier: 1,
+                                                 constant: -16)
+        
         let bottomTitleLabel = NSLayoutConstraint(item: newsTitleLabel,
-                                               attribute: .bottom,
-                                               relatedBy: .equal,
-                                               toItem: self.newsImageView,
-                                               attribute: .bottom,
-                                               multiplier: 1,
-                                               constant: -70)
+                                                  attribute: .bottom,
+                                                  relatedBy: .equal,
+                                                  toItem: self.newsImageView,
+                                                  attribute: .bottom,
+                                                  multiplier: 1,
+                                                  constant: -70)
         
         NSLayoutConstraint.activate([leftTitleLabel, rightTitleLabel,bottomTitleLabel])
         
         publishedAtLabel.translatesAutoresizingMaskIntoConstraints = false
         
         let leftpublishedAtLabel = NSLayoutConstraint(item: publishedAtLabel,
-                                                     attribute: .left,
-                                                     relatedBy: .equal,
-                                           toItem: self.newsImageView,
-                                                     attribute: .left,
-                                                     multiplier: 1,
-                                                     constant: 16)
+                                                      attribute: .left,
+                                                      relatedBy: .equal,
+                                                      toItem: self.newsImageView,
+                                                      attribute: .left,
+                                                      multiplier: 1,
+                                                      constant: 16)
+        
         let rightpublishedAtLabel = NSLayoutConstraint(item: publishedAtLabel,
-                                                     attribute: .right,
-                                                     relatedBy: .equal,
-                                                     toItem: self.newsImageView,
-                                                     attribute: .right,
-                                                     multiplier: 1,
-                                                     constant: -16)
+                                                       attribute: .right,
+                                                       relatedBy: .equal,
+                                                       toItem: self.newsImageView,
+                                                       attribute: .right,
+                                                       multiplier: 1,
+                                                       constant: -16)
+        
         let bottompublishedAtLabel = NSLayoutConstraint(item: publishedAtLabel,
-                                               attribute: .bottom,
-                                               relatedBy: .equal,
-                                               toItem: self.newsImageView,
-                                               attribute: .bottom,
-                                               multiplier: 1,
-                                               constant: -30)
+                                                        attribute: .bottom,
+                                                        relatedBy: .equal,
+                                                        toItem: self.newsImageView,
+                                                        attribute: .bottom,
+                                                        multiplier: 1,
+                                                        constant: -30)
         
         NSLayoutConstraint.activate([leftpublishedAtLabel, rightpublishedAtLabel,bottompublishedAtLabel])
         
         newsDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         
         let leftDescriptionLabel = NSLayoutConstraint(item: newsDescriptionLabel,
-                                                     attribute: .left,
-                                                     relatedBy: .equal,
-                                           toItem: self.contentView,
-                                                     attribute: .left,
-                                                     multiplier: 1,
-                                                     constant: 16)
+                                                      attribute: .left,
+                                                      relatedBy: .equal,
+                                                      toItem: self.contentView,
+                                                      attribute: .left,
+                                                      multiplier: 1,
+                                                      constant: 16)
+        
         let rightDescriptionLabel = NSLayoutConstraint(item: newsDescriptionLabel,
-                                                     attribute: .right,
+                                                       attribute: .right,
+                                                       relatedBy: .equal,
+                                                       toItem: self.newsImageView,
+                                                       attribute: .right,
+                                                       multiplier: 1,
+                                                       constant: -16)
+        
+        let topDescriptionLabel = NSLayoutConstraint(item: newsDescriptionLabel,
+                                                     attribute: .top,
                                                      relatedBy: .equal,
                                                      toItem: self.newsImageView,
-                                                     attribute: .right,
+                                                     attribute: .bottom,
                                                      multiplier: 1,
-                                                     constant: -16)
-        let topDescriptionLabel = NSLayoutConstraint(item: newsDescriptionLabel,
-                                               attribute: .top,
-                                               relatedBy: .equal,
-                                               toItem: self.newsImageView,
-                                               attribute: .bottom,
-                                               multiplier: 1,
-                                               constant: 20)
+                                                     constant: 20)
         
         NSLayoutConstraint.activate([leftDescriptionLabel, rightDescriptionLabel,topDescriptionLabel])
         
         dividerImageView.translatesAutoresizingMaskIntoConstraints = false
         
         let leftdividerConstraint = NSLayoutConstraint(item: dividerImageView,
-                                                     attribute: .left,
-                                                     relatedBy: .equal,
-                                                     toItem: self.contentView,
-                                                     attribute: .left,
-                                                     multiplier: 1,
-                                                     constant: 10)
+                                                       attribute: .left,
+                                                       relatedBy: .equal,
+                                                       toItem: self.contentView,
+                                                       attribute: .left,
+                                                       multiplier: 1,
+                                                       constant: 10)
+        
         let rightdividerConstraint = NSLayoutConstraint(item: dividerImageView,
-                                                     attribute: .right,
-                                                     relatedBy: .equal,
-                                                     toItem: self.contentView,
-                                                     attribute: .right,
-                                                     multiplier: 1,
-                                                     constant: -10)
+                                                        attribute: .right,
+                                                        relatedBy: .equal,
+                                                        toItem: self.contentView,
+                                                        attribute: .right,
+                                                        multiplier: 1,
+                                                        constant: -10)
+        
         let topdividerConstraint = NSLayoutConstraint(item: dividerImageView,
-                                                    attribute: .top,
-                                                    relatedBy: .equal,
-                                                    toItem: self.newsDescriptionLabel,
-                                                    attribute: .bottom,
-                                                    multiplier: 1,
-                                                    constant: 10)
+                                                      attribute: .top,
+                                                      relatedBy: .equal,
+                                                      toItem: self.newsDescriptionLabel,
+                                                      attribute: .bottom,
+                                                      multiplier: 1,
+                                                      constant: 10)
         
         NSLayoutConstraint.activate([leftdividerConstraint, rightdividerConstraint,topdividerConstraint])
-
         
         newsContentLabel.translatesAutoresizingMaskIntoConstraints = false
         
         let leftContentLabel = NSLayoutConstraint(item: newsContentLabel,
-                                                     attribute: .left,
-                                                     relatedBy: .equal,
-                                           toItem: self.contentView,
-                                                     attribute: .left,
-                                                     multiplier: 1,
-                                                     constant: 16)
+                                                  attribute: .left,
+                                                  relatedBy: .equal,
+                                                  toItem: self.contentView,
+                                                  attribute: .left,
+                                                  multiplier: 1,
+                                                  constant: 16)
+        
         let rightContentLabel = NSLayoutConstraint(item: newsContentLabel,
-                                                     attribute: .right,
-                                                     relatedBy: .equal,
-                                                     toItem: self.newsImageView,
-                                                     attribute: .right,
-                                                     multiplier: 1,
-                                                     constant: -16)
+                                                   attribute: .right,
+                                                   relatedBy: .equal,
+                                                   toItem: self.newsImageView,
+                                                   attribute: .right,
+                                                   multiplier: 1,
+                                                   constant: -16)
+        
         let topContentLabel = NSLayoutConstraint(item: newsContentLabel,
-                                               attribute: .top,
-                                               relatedBy: .equal,
-                                               toItem: self.newsDescriptionLabel,
-                                               attribute: .bottom,
-                                               multiplier: 1,
-                                               constant: 30)
+                                                 attribute: .top,
+                                                 relatedBy: .equal,
+                                                 toItem: self.newsDescriptionLabel,
+                                                 attribute: .bottom,
+                                                 multiplier: 1,
+                                                 constant: 30)
         
         NSLayoutConstraint.activate([leftContentLabel, rightContentLabel,topContentLabel])
         
         moredetailedButton.translatesAutoresizingMaskIntoConstraints = false
         
         let leftmoredetailedButton = NSLayoutConstraint(item: moredetailedButton,
-                                            attribute: .left,
-                                            relatedBy: .equal,
-                                            toItem: self.contentView,
-                                            attribute: .left,
-                                            multiplier: 1,
-                                            constant: 50)
+                                                        attribute: .left,
+                                                        relatedBy: .equal,
+                                                        toItem: self.contentView,
+                                                        attribute: .left,
+                                                        multiplier: 1,
+                                                        constant: 50)
+        
         let rightmoredetailedButton = NSLayoutConstraint(item: moredetailedButton,
-                                             attribute: .right,
-                                             relatedBy: .equal,
-                                             toItem: self.contentView,
-                                             attribute: .right,
-                                             multiplier: 1,
-                                             constant: -50)
+                                                         attribute: .right,
+                                                         relatedBy: .equal,
+                                                         toItem: self.contentView,
+                                                         attribute: .right,
+                                                         multiplier: 1,
+                                                         constant: -50)
+        
+        let topmmoredetailedButton = NSLayoutConstraint(item: moredetailedButton,
+                                                          attribute: .top,
+                                                          relatedBy: .equal,
+                                                          toItem: self.newsContentLabel,
+                                                          attribute: .bottom,
+                                                          multiplier: 1,
+                                                          constant: 50)
+        
         let bottommoredetailedButton = NSLayoutConstraint(item: moredetailedButton,
-                                           attribute: .bottom,
-                                           relatedBy: .equal,
-                                           toItem: self.shareButton,
-                                           attribute: .top,
-                                           multiplier: 1,
-                                           constant: -20)
+                                                          attribute: .bottom,
+                                                          relatedBy: .equal,
+                                                          toItem: self.shareButton,
+                                                          attribute: .top,
+                                                          multiplier: 1,
+                                                          constant: -20)
+        
         let heightmoredetailedButton = NSLayoutConstraint(item: moredetailedButton,
-                                                       attribute: .height,
-                                                       relatedBy: .equal,
-                                                       toItem: nil,
-                                                       attribute: .notAnAttribute,
-                                                       multiplier: 1,
-                                                       constant: 50)
+                                                          attribute: .height,
+                                                          relatedBy: .equal,
+                                                          toItem: nil,
+                                                          attribute: .notAnAttribute,
+                                                          multiplier: 1,
+                                                          constant: 50)
         
         
-        NSLayoutConstraint.activate([leftmoredetailedButton, rightmoredetailedButton, bottommoredetailedButton,heightmoredetailedButton])
+        NSLayoutConstraint.activate([leftmoredetailedButton, rightmoredetailedButton,topmmoredetailedButton, bottommoredetailedButton,heightmoredetailedButton])
         
         shareButton.translatesAutoresizingMaskIntoConstraints = false
         
         let leftshareButton = NSLayoutConstraint(item: shareButton,
-                                            attribute: .left,
-                                            relatedBy: .equal,
-                                            toItem: self.contentView,
-                                            attribute: .left,
-                                            multiplier: 1,
-                                            constant: 50)
+                                                 attribute: .left,
+                                                 relatedBy: .equal,
+                                                 toItem: self.contentView,
+                                                 attribute: .left,
+                                                 multiplier: 1,
+                                                 constant: 50)
+        
         let rightshareButton = NSLayoutConstraint(item: shareButton,
-                                             attribute: .right,
-                                             relatedBy: .equal,
-                                             toItem: self.contentView,
-                                             attribute: .right,
-                                             multiplier: 1,
-                                             constant: -50)
+                                                  attribute: .right,
+                                                  relatedBy: .equal,
+                                                  toItem: self.contentView,
+                                                  attribute: .right,
+                                                  multiplier: 1,
+                                                  constant: -50)
+        
+        let topmshareButton = NSLayoutConstraint(item: shareButton,
+                                                          attribute: .top,
+                                                          relatedBy: .equal,
+                                                          toItem: self.moredetailedButton,
+                                                          attribute: .bottom,
+                                                          multiplier: 1,
+                                                          constant: 50)
+        
         let bottomshareButton = NSLayoutConstraint(item: shareButton,
-                                           attribute: .bottom,
-                                           relatedBy: .equal,
-                                           toItem: self.contentView,
-                                           attribute: .bottom,
-                                           multiplier: 1,
-                                           constant: -20)
+                                                          attribute: .top,
+                                                          relatedBy: .equal,
+                                                          toItem: self.scrollView,
+                                                          attribute: .bottom,
+                                                          multiplier: 1,
+                                                          constant: -50)
+        
         let heightshareButton = NSLayoutConstraint(item: shareButton,
-                                                       attribute: .height,
-                                                       relatedBy: .equal,
-                                                       toItem: nil,
-                                                       attribute: .notAnAttribute,
-                                                       multiplier: 1,
-                                                       constant: 50)
+                                                   attribute: .height,
+                                                   relatedBy: .equal,
+                                                   toItem: nil,
+                                                   attribute: .notAnAttribute,
+                                                   multiplier: 1,
+                                                   constant: 50)
         
-        
-        NSLayoutConstraint.activate([leftshareButton, rightshareButton, bottomshareButton,heightshareButton])
+        NSLayoutConstraint.activate([leftshareButton, rightshareButton, topmshareButton,bottomshareButton,heightshareButton])
     }
 }
 

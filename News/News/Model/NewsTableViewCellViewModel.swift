@@ -10,22 +10,22 @@ import Foundation
 class NewsTableViewCellViewModel {
     let title: String
     let description: String
-    let publishedAt: String
+    let pubDate: String
     let content: String
-    let imageURL: URL?
+    let image_url: URL?
     var imageData: Data? = nil
     
     init(
         title: String,
         description: String,
-        publishedAt: String,
+        pubDate: String,
         content: String,
-        imageURL: URL?
+        image_url: URL?
     ) {
         self.title = title
         self.description = description
-        self.publishedAt = publishedAt
+        self.pubDate = pubDate
         self.content = content
-        self.imageURL = imageURL
+        self.image_url = image_url
     }
 }

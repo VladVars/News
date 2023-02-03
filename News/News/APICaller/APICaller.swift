@@ -11,8 +11,8 @@ final class APICaller {
     static let shared = APICaller()
     
     struct Constants {
-        static let topHeadlinesURL = URL(string: "https://newsapi.org/v2/top-headlines?country=ru&apiKey=3662bd47e0db48d1b1033d2fb0c6363f")
-        static let searchUrlString = "https://newsapi.org/v2/everything?sortedBy=popularity&apiKey=3662bd47e0db48d1b1033d2fb0c6363f&q="
+        static let topHeadlinesURL = URL(string: "https://newsdata.io/api/1/news?apikey=pub_164868df3c7b76f7acb2dd212ab65fbc9814c&q=news&country=ru")
+        static let searchUrlString = "https://newsdata.io/api/1/news?apikey=pub_164868df3c7b76f7acb2dd212ab65fbc9814c&q="
     }
     
     public func getTopStories(completion: @escaping (Result<[Article], Error>) -> Void) {
@@ -26,8 +26,8 @@ final class APICaller {
                 do {
                     let result = try JSONDecoder().decode(APIResponse.self, from: data)
                     
-                    print("Articles: \(result.articles.count )")
-                    completion(.success(result.articles))
+                    print("Articles: \(result.results.count )")
+                    completion(.success(result.results))
                 }
                 catch {
                     completion(.failure(error))
@@ -51,8 +51,8 @@ final class APICaller {
                 do {
                     let result = try JSONDecoder().decode(APIResponse.self, from: data)
                     
-                    print("Articles: \(result.articles.count )")
-                    completion(.success(result.articles))
+                    print("Articles: \(result.results.count )")
+                    completion(.success(result.results))
                 }
                 catch {
                     completion(.failure(error))

@@ -79,9 +79,9 @@ class NewsTableViewCell: UITableViewCell {
                                         height: contentView.frame.size.height/2)
         
         viewLabel.frame = CGRect(x: 10,
-                                        y: 110,
-                                        width: contentView.frame.size.width - 170,
-                                        height: contentView.frame.size.height/2)
+                                 y: 110,
+                                 width: contentView.frame.size.width - 170,
+                                 height: contentView.frame.size.height/2)
         
         newsImageView.frame = CGRect(x: contentView.frame.size.width - 160,
                                      y: 5,
@@ -102,19 +102,12 @@ class NewsTableViewCell: UITableViewCell {
     func configure(with viewModel: NewsTableViewCellViewModel) {
         newsTitleLabel.text = viewModel.title
         newsDescriptionLabel.text = viewModel.description
-        publishedAtLabel.text = viewModel.publishedAt
-        
-        //        DateFormatter
-        
-//        let str = viewModel.publishedAt
-//        let formatter = ISO8601DateFormatter()
-//        let yourDate = formatter.date(from: str)!
-//        publishedAtLabel.text = "\(String(describing: yourDate))"
+        publishedAtLabel.text = viewModel.pubDate
         
         //        Image
         if let data = viewModel.imageData {
             newsImageView.image = UIImage(data: data)
-        } else if let url = viewModel.imageURL {
+        } else if let url = viewModel.image_url {
             URLSession.shared.dataTask(with: url) { [weak self] data, _, error in
                 guard let data = data, error == nil else {
                     return
