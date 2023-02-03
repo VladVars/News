@@ -96,6 +96,27 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource, UISearchBa
         return cell
     }
     
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        
+        let degree: Double = 90
+        let rotationAngel = CGFloat(degree * M_PI / 180)
+        let rotationTrasform = CATransform3DMakeRotation(rotationAngel, 1, 0, 0)
+        cell.layer.transform = rotationTrasform
+        
+        UIView.animate(withDuration: 1, delay: 0.2 * Double(indexPath.row), options: .curveEaseInOut) {
+            cell.layer.transform = CATransform3DIdentity
+        }
+        
+        
+        //        let translationTranform = CATransform3DTranslate(CATransform3DIdentity, -500, 400, 0)
+        //        cell.layer.transform = translationTranform
+        //
+        //        UIView.animate(withDuration: 1, delay: 0.2 * Double(indexPath.row), options: .curveEaseInOut) {
+        //            cell.layer.transform = CATransform3DIdentity
+        //        }
+    }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
