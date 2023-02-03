@@ -16,7 +16,6 @@ class NewsViewController: UIViewController {
         let scrollView = UIScrollView()
         scrollView.backgroundColor = .systemBackground
         scrollView.frame = view.bounds
-//        scrollView.contentSize = contentSize
         return scrollView
     }()
     
@@ -24,14 +23,8 @@ class NewsViewController: UIViewController {
         let contentView = UIView()
         contentView.backgroundColor = .systemBackground
         contentView.frame = view.bounds
-//        contentView.frame.size = contentSize
         return contentView
     }()
-    
-//    private var contentSize: CGSize {
-//        CGSize(width: view.frame.width, height: view.frame.height + 100)
-//
-//    }
     
     private let newsImageView: UIImageView = {
         let imageView = UIImageView()
@@ -443,7 +436,7 @@ extension NewsViewController {
                                                           constant: 50)
         
         let bottomshareButton = NSLayoutConstraint(item: shareButton,
-                                                          attribute: .top,
+                                                          attribute: .bottom,
                                                           relatedBy: .equal,
                                                           toItem: self.scrollView,
                                                           attribute: .bottom,
