@@ -47,8 +47,6 @@ class ViewController: UIViewController {
     }
     
     @objc private func refresh() {
-        print("start refresh")
-        
         fetchTopStories()
     }
     
@@ -58,6 +56,13 @@ class ViewController: UIViewController {
     }
     
     private func fetchTopStories() {
+        viewModels.removeAll()
+        
+        if tableView.refreshControl?.isRefreshing == true {
+            print("refreshing data")
+        } else {
+            print("fetching data")
+        }
         
         APICaller.shared.getTopStories { [weak self] result in
             switch result {
@@ -96,17 +101,18 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource, UISearchBa
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(
-            withIdentifier: NewsTableViewCell.identifier,
-            for: indexPath) as? NewsTableViewCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: NewsTableViewCell.identifier,for: indexPath) as? NewsTableViewCell else {
             fatalError()
         }
+        
         cell.configure(with: viewModels[indexPath.row])
+        
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+
         let article = articles[indexPath.row]
         
         guard let url = URL(string: article.url ?? "") else { return }
@@ -137,7 +143,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource, UISearchBa
                                                description: $0.description ?? "No Description",
                                                publishedAt: $0.publishedAt,
                                                content: $0.content ?? "No Content",
-                                               imageURL: URL(string: $0.urlToImage ?? "nosign"))
+                                               imageURL: URL(string: $0.urlToImage ?? ""))
                 })
                 
                 DispatchQueue.main.async {

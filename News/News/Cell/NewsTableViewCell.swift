@@ -20,12 +20,18 @@ class NewsTableViewCell: UITableViewCell {
     
     private let newsDescriptionLabel: UILabel = {
         let label = UILabel()
-        label.numberOfLines = 0
+        label.numberOfLines = 3
         label.font = .systemFont(ofSize: 15, weight: .light)
         return label
     }()
     
     private let publishedAtLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 13, weight: .light)
+        return label
+    }()
+    
+    private let viewLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 13, weight: .light)
         return label
@@ -47,6 +53,7 @@ class NewsTableViewCell: UITableViewCell {
         contentView.addSubview(newsTitleLabel)
         contentView.addSubview(newsDescriptionLabel)
         contentView.addSubview(publishedAtLabel)
+        contentView.addSubview(viewLabel)
     }
     
     required init?(coder: NSCoder) {
@@ -62,11 +69,16 @@ class NewsTableViewCell: UITableViewCell {
                                       height: 70)
         
         newsDescriptionLabel.frame = CGRect(x: 10,
-                                            y: 60,
+                                            y: 50,
                                             width: contentView.frame.size.width - 170,
                                             height: contentView.frame.size.height/2)
         
         publishedAtLabel.frame = CGRect(x: 10,
+                                        y: 90,
+                                        width: contentView.frame.size.width - 170,
+                                        height: contentView.frame.size.height/2)
+        
+        viewLabel.frame = CGRect(x: 10,
                                         y: 110,
                                         width: contentView.frame.size.width - 170,
                                         height: contentView.frame.size.height/2)
@@ -75,12 +87,15 @@ class NewsTableViewCell: UITableViewCell {
                                      y: 5,
                                      width: 150,
                                      height: contentView.frame.size.height - 10)
+        
     }
     
     override func prepareForReuse() {
         super.prepareForReuse()
         newsTitleLabel.text = nil
         newsDescriptionLabel.text = nil
+        publishedAtLabel.text = nil
+        viewLabel.text = nil
         newsImageView.image = nil
     }
     
@@ -88,6 +103,13 @@ class NewsTableViewCell: UITableViewCell {
         newsTitleLabel.text = viewModel.title
         newsDescriptionLabel.text = viewModel.description
         publishedAtLabel.text = viewModel.publishedAt
+        
+        //        DateFormatter
+        
+//        let str = viewModel.publishedAt
+//        let formatter = ISO8601DateFormatter()
+//        let yourDate = formatter.date(from: str)!
+//        publishedAtLabel.text = "\(String(describing: yourDate))"
         
         //        Image
         if let data = viewModel.imageData {

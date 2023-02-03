@@ -18,6 +18,7 @@
 		D10CD3B7298A6BBF0092ED02 /* NewsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D10CD3B6298A6BBF0092ED02 /* NewsTableViewCell.swift */; };
 		D10CD3B9298A6F0E0092ED02 /* NewsTableViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D10CD3B8298A6F0E0092ED02 /* NewsTableViewCellViewModel.swift */; };
 		D10CD3BB298A9BAA0092ED02 /* NewsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D10CD3BA298A9BAA0092ED02 /* NewsViewController.swift */; };
+		D10CD3C2298C0BE80092ED02 /* DefaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D10CD3C1298C0BE80092ED02 /* DefaultsManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +35,7 @@
 		D10CD3B6298A6BBF0092ED02 /* NewsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsTableViewCell.swift; sourceTree = "<group>"; };
 		D10CD3B8298A6F0E0092ED02 /* NewsTableViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsTableViewCellViewModel.swift; sourceTree = "<group>"; };
 		D10CD3BA298A9BAA0092ED02 /* NewsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsViewController.swift; sourceTree = "<group>"; };
+		D10CD3C1298C0BE80092ED02 /* DefaultsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultsManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,6 +68,7 @@
 		D10CD394298A564E0092ED02 /* News */ = {
 			isa = PBXGroup;
 			children = (
+				D10CD3BE298C0AA70092ED02 /* Managers */,
 				D10CD3B5298A6B510092ED02 /* Cell */,
 				D10CD3B0298A5D570092ED02 /* APICaller */,
 				D10CD3AF298A5CD50092ED02 /* Model */,
@@ -136,6 +139,14 @@
 				D10CD3B6298A6BBF0092ED02 /* NewsTableViewCell.swift */,
 			);
 			path = Cell;
+			sourceTree = "<group>";
+		};
+		D10CD3BE298C0AA70092ED02 /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				D10CD3C1298C0BE80092ED02 /* DefaultsManager.swift */,
+			);
+			path = Managers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -216,6 +227,7 @@
 				D10CD3B4298A62000092ED02 /* Model.swift in Sources */,
 				D10CD3B2298A5D790092ED02 /* APICaller.swift in Sources */,
 				D10CD3B9298A6F0E0092ED02 /* NewsTableViewCellViewModel.swift in Sources */,
+				D10CD3C2298C0BE80092ED02 /* DefaultsManager.swift in Sources */,
 				D10CD3BB298A9BAA0092ED02 /* NewsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
