@@ -104,7 +104,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource, UISearchBa
         let rotationTrasform = CATransform3DMakeRotation(rotationAngel, 1, 0, 0)
         cell.layer.transform = rotationTrasform
         
-        UIView.animate(withDuration: 1, delay: 0.2 * Double(indexPath.row), options: .curveEaseInOut) {
+        UIView.animate(withDuration: 1, delay: 0.05 * Double(indexPath.row), options: .curveEaseInOut) {
             cell.layer.transform = CATransform3DIdentity
         }
         

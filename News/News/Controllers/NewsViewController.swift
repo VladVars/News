@@ -74,17 +74,6 @@ class NewsViewController: UIViewController {
         return label
     }()
     
-    private let moredetailedButton: UIButton = {
-        let button = UIButton()
-        button.setTitle("More Detailed", for: .normal)
-        button.backgroundColor = .gray
-        button.setTitleColor(.white, for: .normal)
-        button.layer.cornerRadius = 12
-        button.layer.masksToBounds = true
-        button.titleLabel?.font = .systemFont(ofSize: 20, weight: .bold)
-        return button
-    }()
-    
     private let shareButton: UIButton = {
         let button = UIButton()
         button.setTitle("Share", for: .normal)
@@ -108,19 +97,22 @@ class NewsViewController: UIViewController {
         contentView.addSubview(newsDescriptionLabel)
         contentView.addSubview(newsContentLabel)
         contentView.addSubview(publishedAtLabel)
-        contentView.addSubview(moredetailedButton)
-        contentView.addSubview(shareButton)
         contentView.addSubview(dividerImageView)
+        contentView.addSubview(shareButton)
         
         //        Add Target Button
-        moredetailedButton.addTarget(self,
-                                     action: #selector(moredetailedButtonTapped),
-                                     for: .touchUpInside)
         
-        shareButton.addTarget(self,
-                              action: #selector(shareButtonTapped),
-                              for: .touchUpInside)
+        let shareButton2 = UIBarButtonItem(title: "Share",
+                                           style: .plain,
+                                           target: self,
+                                           action: #selector(shareButtonTapped))
         
+        let moreButton = UIBarButtonItem(title: "Details",
+                                         style: .plain,
+                                           target: self,
+                                           action: #selector(moredetailedButtonTapped))
+        
+        self.navigationItem.rightBarButtonItems = [shareButton2, moreButton]
         
         //        Add Constraints
         setupConstraints()
@@ -364,51 +356,6 @@ extension NewsViewController {
         
         NSLayoutConstraint.activate([leftContentLabel, rightContentLabel,topContentLabel])
         
-        moredetailedButton.translatesAutoresizingMaskIntoConstraints = false
-        
-        let leftmoredetailedButton = NSLayoutConstraint(item: moredetailedButton,
-                                                        attribute: .left,
-                                                        relatedBy: .equal,
-                                                        toItem: self.contentView,
-                                                        attribute: .left,
-                                                        multiplier: 1,
-                                                        constant: 50)
-        
-        let rightmoredetailedButton = NSLayoutConstraint(item: moredetailedButton,
-                                                         attribute: .right,
-                                                         relatedBy: .equal,
-                                                         toItem: self.contentView,
-                                                         attribute: .right,
-                                                         multiplier: 1,
-                                                         constant: -50)
-        
-        let topmmoredetailedButton = NSLayoutConstraint(item: moredetailedButton,
-                                                          attribute: .top,
-                                                          relatedBy: .equal,
-                                                          toItem: self.newsContentLabel,
-                                                          attribute: .bottom,
-                                                          multiplier: 1,
-                                                          constant: 50)
-        
-        let bottommoredetailedButton = NSLayoutConstraint(item: moredetailedButton,
-                                                          attribute: .bottom,
-                                                          relatedBy: .equal,
-                                                          toItem: self.shareButton,
-                                                          attribute: .top,
-                                                          multiplier: 1,
-                                                          constant: -20)
-        
-        let heightmoredetailedButton = NSLayoutConstraint(item: moredetailedButton,
-                                                          attribute: .height,
-                                                          relatedBy: .equal,
-                                                          toItem: nil,
-                                                          attribute: .notAnAttribute,
-                                                          multiplier: 1,
-                                                          constant: 50)
-        
-        
-        NSLayoutConstraint.activate([leftmoredetailedButton, rightmoredetailedButton,topmmoredetailedButton, bottommoredetailedButton,heightmoredetailedButton])
-        
         shareButton.translatesAutoresizingMaskIntoConstraints = false
         
         let leftshareButton = NSLayoutConstraint(item: shareButton,
@@ -430,10 +377,10 @@ extension NewsViewController {
         let topmshareButton = NSLayoutConstraint(item: shareButton,
                                                           attribute: .top,
                                                           relatedBy: .equal,
-                                                          toItem: self.moredetailedButton,
+                                                          toItem: self.newsContentLabel,
                                                           attribute: .bottom,
                                                           multiplier: 1,
-                                                          constant: 50)
+                                                          constant: 10)
         
         let bottomshareButton = NSLayoutConstraint(item: shareButton,
                                                           attribute: .bottom,
@@ -441,17 +388,10 @@ extension NewsViewController {
                                                           toItem: self.scrollView,
                                                           attribute: .bottom,
                                                           multiplier: 1,
-                                                          constant: -50)
+                                                          constant: -10)
         
-        let heightshareButton = NSLayoutConstraint(item: shareButton,
-                                                   attribute: .height,
-                                                   relatedBy: .equal,
-                                                   toItem: nil,
-                                                   attribute: .notAnAttribute,
-                                                   multiplier: 1,
-                                                   constant: 50)
-        
-        NSLayoutConstraint.activate([leftshareButton, rightshareButton, topmshareButton,bottomshareButton,heightshareButton])
+        NSLayoutConstraint.activate([leftshareButton, rightshareButton, topmshareButton,bottomshareButton])
+        shareButton.isHidden = true
     }
 }
 
